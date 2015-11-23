@@ -40,8 +40,10 @@ def quit(msg=""):
 
 # Set username, mode 8 sets invisible and the rest is garbage
 def user(user="guest", mode="8", realname="lol idk"):
-	buffer = "USER " + user + " " + mode + " * :" + realname + "\r\n"
+	cmd = "USER " + user + " " + mode + " * :" + realname + "\r\n"
+	return cmd
 
 # Set nick
 def nick(name):
-	buffer = "NICK " + name + "\r\n"
+	cmd = "NICK " + name + "\r\n"
+	return cmd
