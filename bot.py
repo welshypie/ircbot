@@ -7,7 +7,9 @@ channel = sys.argv[2]	# e.g. derpnet
 nickname = sys.argv[3]	# e.g. derpbot
 
 auth_users = []
-command_dict = {}
+response_dict = {
+	"!time":
+}
 
 # Create socket which will connect to the server
 connection = network.create_sock(server)
@@ -16,3 +18,5 @@ connection = network.create_sock(server)
 # At the end of this, we will be in the specified channel
 application.irc_handshake(connection, nickname, channel)
 
+while True:
+	pass

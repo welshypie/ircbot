@@ -2,41 +2,41 @@
 import irc
 import network
 
+# Receive data from socket, decode it, print to console
+def receive(sock):
+	# Receive data from socket
+	msg = sock.recv(4096)
+	# Turn into a string so we can parse it
+	msg = network.decode(msg)
+	# Print to console
+	print(msg.strip("\r\n"))
+	return msg
+
+# Print data to transmit to console, encode it, send to socket
+def transmit(sock, rsp):
+	print("... " + rsp.strip("\r\n"))
+	# Encode our response
+	rsp = network.encode(rsp)
+	sock.send(rsp)
+
+# IRC handshake used to negotiate with server and join channel
 def irc_handshake(sock, nick, chan):
+	# Stage 1: send our ident once the server requests it
 	while True:
-		# Receive data from socket
-		msg = sock.recv(4096)
-		# Turn into a string so we can parse it
-		msg = network.decode(msg)
-		print_rcv(data)
-		# Check if the server has requested our ident
+		msg = receive(sock)
 		if "Checking Ident" in msg:
 			# Send USER command
-			rsp = irc.user()
-			print_snd(rsp)
-			rsp = network.encode(rsp)
-			sock.send(rsp)
+			user_cmd = irc.user()
+			transmit(sock, user_cmd)
 			# Send NICK command
-			rsp = irc.nick(nick)
-			print_snd(rsp)
-			rsp = network.encode(rsp)
-			sock.send(rsp)
+			nick_cmd = irc.nick(nick)
+			transmit(sock, nick_cmd)
 			break
+	# Stage 2: join channel once the server sets our mode
 	while True:
-		msg = sock.recv(4096)
-		msg = network.decode(msg)
+		msg = receive(sock)
 		# Check if the server has set a mode for us
 		if "MODE" in msg:
-			rsp = irc.join(chan)
-			print("... " + rsp.strip("\r\n"))
-			rsp = network.encode(rsp)
-			sock.send(rsp)
+			join_cmd = irc.join(chan)
+			transmit(sock, join_cmd)
 			break
-
-def print_rcv(data):
-	data = data.strip("\r\n")
-	print(data)
-
-def print_snd(data):
-	data = "... " + data.strip("\r\n")
-	print(data)
