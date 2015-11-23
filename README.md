@@ -5,4 +5,4 @@ A basic IRC bot implemented in python.
 Python v3.5 (may work in earlier v3.x)
 
 # Usage
-python bot.py <server name> <channel name (without the #)> <bot nickname>
+don't
